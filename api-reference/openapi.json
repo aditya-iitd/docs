@@ -5,33 +5,11 @@
     "description": "API for chatting with AI about your repository code",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://api.example.com/v1"
-    }
-  ],
   "paths": {
     "/chat": {
       "post": {
         "summary": "Chat with your repository",
         "operationId": "chat",
-        "parameters": [
-          {
-            "name": "repo_name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Name of the repository to query (e.g., github.com/calcom/cal.com)",
-            "example": "github.com/calcom/cal.com"
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
