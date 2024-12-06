@@ -1,297 +1,315 @@
 openapi: 3.0.1
 info:
-  title: Chat
-  description: Chat with your repository
-  version: 1.0.0
+title: Chat
+description: Chat with your repository
+version: 1.0.0
 servers:
-  - url: https://3428-49-207-209-69.ngrok-free.app
-paths:
+
+* url: https://3428-49-207-209-69.ngrok-free.app
+  paths:
   /chat:
-    post:
-      summary: Chat with your repository
-      operationId: chat
-      parameters:
-        - name: repo_name
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Name of the repository to query (e.g., github.com/calcom/cal.com)
-          example: github.com/calcom/cal.com
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                messages:
-                  description: A list of messages comprising the conversation so far.
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      role:
-                        type: string
-                        required: true
-                        description: The role of the message sender.
-                        enum:
-                          - user
-                          - assistant
-                          - system
-                      content:
-                        type: string
-                        required: true
-                        description: The content of the message.
-                model:
-                  type: string
-                  required: true
-                  enum:
-                    - gpt-4o
-                  description: The model to use for chat completion. Only gpt-4o is supported in free tier.
-                stream:
-                  type: boolean
-                  default: false
-                  description: Whether to stream the response
-                temperature:
-                  type: number
-                  format: float
-                  minimum: 0
-                  maximum: 2
-                  description: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+  post:
+  summary: Chat with your repository
+  operationId: chat
+  parameters:
+
+  * name: repo\_name
+    in: query
+    required: true
+    schema:
+    type: string
+    description: Name of the repository to query (e.g., github.com/calcom/cal.com)
+    example: github.com/calcom/cal.com
+    security:
+
+  * bearerAuth: \[]
+    requestBody:
+    required: true
+    content:
+    application/json:
+    schema:
+    type: object
+    properties:
+    messages:
+    description: A list of messages comprising the conversation so far.
+    type: array
+    items:
+    type: object
+    properties:
+    role:
+    type: string
+    required: true
+    description: The role of the message sender.
+    enum:
+
+    * user
+
+    * assistant
+
+    * system
+      content:
+      type: string
+      required: true
+      description: The content of the message.
+      model:
+      type: string
+      required: true
+      enum:
+
+    * gpt-4o
+      description: The model to use for chat completion. Only gpt-4o is supported in free tier.
+      stream:
+      type: boolean
+      default: false
+      description: Whether to stream the response
+      temperature:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 2
+      description: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
       responses:
-        '200':
-          description: Successful chat response
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: '#/components/schemas/ChatCompletion'
-                  - $ref: '#/components/schemas/ChatCompletionChunk'
-        '401':
-          description: Unauthorized - Invalid API key or repository access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  detail:
-                    type: string
-        '404':
-          description: Model not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    $ref: '#/components/schemas/ErrorObject'
-components:
-  schemas:
-    ErrorObject:
+      '200':
+      description: Successful chat response
+      content:
+      application/json:
+      schema:
+      anyOf:
+
+    * $ref: '#/components/schemas/ChatCompletion'
+
+    * $ref: '#/components/schemas/ChatCompletionChunk'
+      '401':
+      description: Unauthorized - Invalid API key or repository access
+      content:
+      application/json:
+      schema:
+      type: object
+      properties:
+      detail:
+      type: string
+      '404':
+      description: Model not found
+      content:
+      application/json:
+      schema:
+      type: object
+      properties:
+      error:
+      $ref: '#/components/schemas/ErrorObject'
+      components:
+      schemas:
+      ErrorObject:
       type: object
       required:
-        - message
-        - type
-        - code
-      properties:
-        message:
-          type: string
-        type:
-          type: string
-        param:
-          type: string
-          nullable: true
-        code:
-          type: string
+
+  * message
+
+  * type
+
+  * code
+    properties:
+    message:
+    type: string
+    type:
+    type: string
+    param:
+    type: string
+    nullable: true
+    code:
+    type: string
     ChatCompletion:
+    type: object
+    properties:
+    id:
+    type: string
+    description: A unique identifier for the chat completion.
+    object:
+    type: string
+    description: The object type, which is always chat.completion.
+    enum:
+
+    * chat.completion
+      created:
+      type: integer
+      description: The Unix timestamp (in seconds) of when the chat completion was created.
+      model:
+      type: string
+      description: The model used for the chat completion.
+      system\_fingerprint:
+      type: string
+      description: This fingerprint represents the backend configuration that the model runs with.
+      service\_tier:
+      type: string
+      description: The service tier used for the chat completion.
+      nullable: true
+      choices:
+      type: array
+      items:
+      $ref: '#/components/schemas/ChatCompletionChoice'
+      description: A list of chat completion choices.
+      usage:
+      $ref: '#/components/schemas/Usage'
+      ChatCompletionChunk:
       type: object
       properties:
-        id:
-          type: string
-          description: A unique identifier for the chat completion.
-        object:
-          type: string
-          description: The object type, which is always chat.completion.
-          enum:
-            - chat.completion
-        created:
-          type: integer
-          description: The Unix timestamp (in seconds) of when the chat completion was created.
-        model:
-          type: string
-          description: The model used for the chat completion.
-        system_fingerprint:
-          type: string
-          description: This fingerprint represents the backend configuration that the model runs with.
-        service_tier:
-          type: string
-          description: The service tier used for the chat completion.
-          nullable: true
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatCompletionChoice'
-          description: A list of chat completion choices.
-        usage:
-          $ref: '#/components/schemas/Usage'
-    ChatCompletionChunk:
+      id:
+      type: string
+      description: A unique identifier for the chat completion.
+      object:
+      type: string
+      description: The object type, which is always chat.completion.chunk.
+      enum:
+
+    * chat.completion.chunk
+      created:
+      type: integer
+      description: The Unix timestamp (in seconds) of when the chat completion was created.
+      model:
+      type: string
+      description: The model used for the chat completion.
+      system\_fingerprint:
+      type: string
+      description: This fingerprint represents the backend configuration that the model runs with.
+      choices:
+      type: array
+      items:
+      $ref: '#/components/schemas/ChatCompletionChunkChoice'
+      usage:
+      $ref: '#/components/schemas/Usage'
+      nullable: true
+      ChatCompletionChoice:
       type: object
       properties:
-        id:
-          type: string
-          description: A unique identifier for the chat completion.
-        object:
-          type: string
-          description: The object type, which is always chat.completion.chunk.
-          enum:
-            - chat.completion.chunk
-        created:
-          type: integer
-          description: The Unix timestamp (in seconds) of when the chat completion was created.
-        model:
-          type: string
-          description: The model used for the chat completion.
-        system_fingerprint:
-          type: string
-          description: This fingerprint represents the backend configuration that the model runs with.
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatCompletionChunkChoice'
-        usage:
-          $ref: '#/components/schemas/Usage'
-          nullable: true
-    ChatCompletionChoice:
+      index:
+      type: integer
+      description: The index of the choice in the list of choices.
+      message:
+      $ref: '#/components/schemas/ChatCompletionMessage'
+      finish\_reason:
+      type: string
+      description: The reason why the choice was finished.
+      logprobs:
       type: object
-      properties:
-        index:
-          type: integer
-          description: The index of the choice in the list of choices.
-        message:
-          $ref: '#/components/schemas/ChatCompletionMessage'
-        finish_reason:
-          type: string
-          description: The reason why the choice was finished.
-        logprobs:
-          type: object
-          nullable: true
-          description: The log probabilities of the tokens in the completion.
-    ChatCompletionChunkChoice:
+      nullable: true
+      description: The log probabilities of the tokens in the completion.
+      ChatCompletionChunkChoice:
       type: object
       description: A chat completion choice.
       properties:
-        index:
-          type: integer
-          description: The index of the choice in the list of choices.
-        delta:
-          $ref: '#/components/schemas/ChatCompletionDelta'
-        finish_reason:
-          type: string
-          nullable: true
-          description: The reason why the choice was finished.
-        logprobs:
-          type: object
-          nullable: true
-          description: The log probabilities of the tokens in the completion.
-    ChatCompletionMessage:
+      index:
+      type: integer
+      description: The index of the choice in the list of choices.
+      delta:
+      $ref: '#/components/schemas/ChatCompletionDelta'
+      finish\_reason:
+      type: string
+      nullable: true
+      description: The reason why the choice was finished.
+      logprobs:
+      type: object
+      nullable: true
+      description: The log probabilities of the tokens in the completion.
+      ChatCompletionMessage:
       type: object
       description: A chat completion message generated by the model.
       required:
-        - role
-        - content
-      properties:
-        role:
-          type: string
-          enum:
-            - assistant
-          description: The role of the message sender.
-        content:
-          type: string
-          description: The content of the message.
-        function_call:
-          type: object
-          nullable: true
-          deprecated: true
-        tool_calls:
-          type: array
-          items:
-            type: object
-          nullable: true
-          description: The tool calls made by the assistant.
-        refusal:
-          type: string
-          nullable: true
-          description: The reason why the message was refused.
-    ChatCompletionDelta:
+
+  * role
+
+  * content
+    properties:
+    role:
+    type: string
+    enum:
+
+    * assistant
+      description: The role of the message sender.
+      content:
+      type: string
+      description: The content of the message.
+      function\_call:
+      type: object
+      nullable: true
+      deprecated: true
+      tool\_calls:
+      type: array
+      items:
+      type: object
+      nullable: true
+      description: The tool calls made by the assistant.
+      refusal:
+      type: string
+      nullable: true
+      description: The reason why the message was refused.
+      ChatCompletionDelta:
       type: object
       properties:
-        role:
-          type: string
-          enum:
-            - assistant
-          description: The role of the message sender.
-        content:
-          type: string
-          description: The content of the message.
-        function_call:
-          type: object
-          nullable: true
-          deprecated: true
-        tool_calls:
-          type: array
-          items:
-            type: object
-          nullable: true
-          description: The tool calls made by the assistant.
-        refusal:
-          type: string
-          nullable: true
-          description: The reason why the message was refused.
-    Usage:
+      role:
+      type: string
+      enum:
+
+    * assistant
+      description: The role of the message sender.
+      content:
+      type: string
+      description: The content of the message.
+      function\_call:
+      type: object
+      nullable: true
+      deprecated: true
+      tool\_calls:
+      type: array
+      items:
+      type: object
+      nullable: true
+      description: The tool calls made by the assistant.
+      refusal:
+      type: string
+      nullable: true
+      description: The reason why the message was refused.
+      Usage:
       type: object
       description: Usage statistics for the completion request.
       properties:
-        prompt_tokens:
-          type: integer
-          description: The number of tokens in the prompt.
-        completion_tokens:
-          type: integer
-          description: The number of tokens in the completion.
-        total_tokens:
-          type: integer
-          description: The total number of tokens in the request.
-        completion_token_details:
-          $ref: '#/components/schemas/CompletionTokenDetails'
-        prompt_token_details:
-          $ref: '#/components/schemas/PromptTokenDetails'
-    CompletionTokenDetails:
+      prompt\_tokens:
+      type: integer
+      description: The number of tokens in the prompt.
+      completion\_tokens:
+      type: integer
+      description: The number of tokens in the completion.
+      total\_tokens:
+      type: integer
+      description: The total number of tokens in the request.
+      completion\_token\_details:
+      $ref: '#/components/schemas/CompletionTokenDetails'
+      prompt\_token\_details:
+      $ref: '#/components/schemas/PromptTokenDetails'
+      CompletionTokenDetails:
       type: object
       properties:
-        reasoning_tokens:
-          type: integer
-          description: The number of reasoning tokens in the completion.
-        audio_tokens:
-          type: integer
-          description: The number of audio tokens in the completion.
-        accepted_prediction_tokens:
-          type: integer
-          description: The number of accepted prediction tokens in the completion.
-        rejected_prediction_tokens:
-          type: integer
-          description: The number of rejected prediction tokens in the completion.
-    PromptTokenDetails:
+      reasoning\_tokens:
+      type: integer
+      description: The number of reasoning tokens in the completion.
+      audio\_tokens:
+      type: integer
+      description: The number of audio tokens in the completion.
+      accepted\_prediction\_tokens:
+      type: integer
+      description: The number of accepted prediction tokens in the completion.
+      rejected\_prediction\_tokens:
+      type: integer
+      description: The number of rejected prediction tokens in the completion.
+      PromptTokenDetails:
       type: object
       properties:
-        cached_tokens:
-          type: integer
-          description: The number of cached tokens in the prompt.
-        audio_tokens:
-          type: integer
-          description: The number of audio tokens in the prompt.
-  securitySchemes:
-    bearerAuth:
+      cached\_tokens:
+      type: integer
+      description: The number of cached tokens in the prompt.
+      audio\_tokens:
+      type: integer
+      description: The number of audio tokens in the prompt.
+      securitySchemes:
+      bearerAuth:
       type: http
       scheme: bearer
