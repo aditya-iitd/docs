@@ -44,6 +44,7 @@
                 ],
                 "properties": {
                   "messages": {
+                    "description": "A list of messages comprising the conversation so far.",
                     "type": "array",
                     "items": {
                       "type": "object",
@@ -54,6 +55,7 @@
                       "properties": {
                         "role": {
                           "type": "string",
+                          "description": "The role of the message sender.",
                           "enum": [
                             "user",
                             "assistant",
@@ -61,7 +63,8 @@
                           ]
                         },
                         "content": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The content of the message."
                         }
                       }
                     }
@@ -71,11 +74,11 @@
                     "enum": [
                       "gpt-4o"
                     ],
-                    "description": "The model to use for chat completion"
+                    "description": "The model to use for chat completion. Only gpt-4o is supported in free tier."
                   },
                   "stream": {
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "description": "Whether to stream the response"
                   },
                   "temperature": {
@@ -83,7 +86,7 @@
                     "format": "float",
                     "minimum": 0,
                     "maximum": 2,
-                    "description": "Sampling temperature for response generation"
+                    "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
                   }
                 }
               }
@@ -94,22 +97,16 @@
           "200": {
             "description": "Successful chat response",
             "content": {
-              "oneOf": [
-                {
-                  "application/json": {
-                    "schema": {
-                      "$ref": "#/components/schemas/ChatCompletion"
-                    }
-                  }
-                },
-                {
-                  "text/event-stream": {
-                    "schema": {
-                      "$ref": "#/components/schemas/ChatCompletionChunk"
-                    }
-                  }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatCompletion"
                 }
-              ]
+              },
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatCompletionChunk"
+                }
+              }
             }
           },
           "401": {
@@ -173,38 +170,40 @@
       },
       "ChatCompletion": {
         "type": "object",
-        "required": [
-          "id",
-          "object",
-          "created",
-          "model",
-          "choices",
-          "usage"
-        ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "A unique identifier for the chat completion."
           },
           "object": {
             "type": "string",
+            "description": "The object type, which is always chat.completion.",
             "enum": [
               "chat.completion"
             ]
           },
           "created": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The Unix timestamp (in seconds) of when the chat completion was created."
           },
           "model": {
-            "type": "string"
+            "type": "string",
+            "description": "The model used for the chat completion."
           },
           "system_fingerprint": {
-            "type": "string"
+            "type": "string",
+            "description": "This fingerprint represents the backend configuration that the model runs with."
+          },
+          "service_tier": {
+            "type": "string",
+            "description": "The service tier used for the chat completion."
           },
           "choices": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChatCompletionChoice"
-            }
+            },
+            "description": "A list of chat completion choices."
           },
           "usage": {
             "$ref": "#/components/schemas/Usage"
@@ -213,13 +212,6 @@
       },
       "ChatCompletionChunk": {
         "type": "object",
-        "required": [
-          "id",
-          "object",
-          "created",
-          "model",
-          "choices"
-        ],
         "properties": {
           "id": {
             "type": "string"
@@ -246,47 +238,34 @@
             }
           },
           "usage": {
-            "type": "null"
+            "$ref": "#/components/schemas/Usage",
+            "nullable": true
           }
         }
       },
       "ChatCompletionChoice": {
         "type": "object",
-        "required": [
-          "index",
-          "message",
-          "finish_reason"
-        ],
         "properties": {
           "index": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The index of the choice in the list of choices."
           },
           "message": {
             "$ref": "#/components/schemas/ChatCompletionMessage"
           },
           "finish_reason": {
             "type": "string",
-            "enum": [
-              "stop",
-              "length",
-              "tool_calls",
-              "content_filter",
-              "function_call"
-            ]
+            "description": "The reason why the choice was finished."
           },
           "logprobs": {
             "type": "object",
-            "nullable": true
+            "nullable": true,
+            "description": "The log probabilities of the tokens in the completion."
           }
         }
       },
       "ChatCompletionChunkChoice": {
         "type": "object",
-        "required": [
-          "index",
-          "delta",
-          "finish_reason"
-        ],
         "properties": {
           "index": {
             "type": "integer"
@@ -296,13 +275,6 @@
           },
           "finish_reason": {
             "type": "string",
-            "enum": [
-              "stop",
-              "length",
-              "tool_calls",
-              "content_filter",
-              "function_call"
-            ],
             "nullable": true
           },
           "logprobs": {
@@ -313,6 +285,7 @@
       },
       "ChatCompletionMessage": {
         "type": "object",
+        "description": "A chat completion message generated by the model.",
         "required": [
           "role",
           "content"
@@ -322,25 +295,30 @@
             "type": "string",
             "enum": [
               "assistant"
-            ]
+            ],
+            "description": "The role of the message sender."
           },
           "content": {
-            "type": "string"
+            "type": "string",
+            "description": "The content of the message."
           },
           "function_call": {
             "type": "object",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "tool_calls": {
             "type": "array",
             "items": {
               "type": "object"
             },
-            "nullable": true
+            "nullable": true,
+            "description": "The tool calls made by the assistant."
           },
           "refusal": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The reason why the message was refused."
           }
         }
       },
@@ -352,73 +330,87 @@
             "enum": [
               "assistant"
             ],
-            "nullable": true
+            "description": "The role of the message sender."
           },
           "content": {
             "type": "string",
-            "nullable": true
+            "description": "The content of the message."
           },
           "function_call": {
             "type": "object",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "tool_calls": {
             "type": "array",
             "items": {
               "type": "object"
             },
-            "nullable": true
+            "nullable": true,
+            "description": "The tool calls made by the assistant."
           },
           "refusal": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The reason why the message was refused."
           }
         }
       },
       "Usage": {
         "type": "object",
-        "required": [
-          "prompt_tokens",
-          "completion_tokens",
-          "total_tokens"
-        ],
+        "description": "Usage statistics for the completion request.",
         "properties": {
           "prompt_tokens": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of tokens in the prompt."
           },
           "completion_tokens": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of tokens in the completion."
           },
           "total_tokens": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The total number of tokens in the request."
           },
-          "completion_tokens_details": {
-            "type": "object",
-            "properties": {
-              "reasoning_tokens": {
-                "type": "integer"
-              },
-              "audio_tokens": {
-                "type": "integer"
-              },
-              "accepted_prediction_tokens": {
-                "type": "integer"
-              },
-              "rejected_prediction_tokens": {
-                "type": "integer"
-              }
-            }
+          "completion_token_details": {
+            "$ref": "#/components/schemas/CompletionTokenDetails"
           },
-          "prompt_tokens_details": {
-            "type": "object",
-            "properties": {
-              "cached_tokens": {
-                "type": "integer"
-              },
-              "audio_tokens": {
-                "type": "integer"
-              }
-            }
+          "prompt_token_details": {
+            "$ref": "#/components/schemas/PromptTokenDetails"
+          }
+        }
+      },
+      "CompletionTokenDetails": {
+        "type": "object",
+        "properties": {
+          "reasoning_tokens": {
+            "type": "integer",
+            "description": "The number of reasoning tokens in the completion."
+          },
+          "audio_tokens": {
+            "type": "integer",
+            "description": "The number of audio tokens in the completion."
+          },
+          "accepted_prediction_tokens": {
+            "type": "integer",
+            "description": "The number of accepted prediction tokens in the completion."
+          },
+          "rejected_prediction_tokens": {
+            "type": "integer",
+            "description": "The number of rejected prediction tokens in the completion."
+          }
+        }
+      },
+      "PromptTokenDetails": {
+        "type": "object",
+        "properties": {
+          "cached_tokens": {
+            "type": "integer",
+            "description": "The number of cached tokens in the prompt."
+          },
+          "audio_tokens": {
+            "type": "integer",
+            "description": "The number of audio tokens in the prompt."
           }
         }
       }
