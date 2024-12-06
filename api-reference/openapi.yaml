@@ -129,6 +129,7 @@ components:
         service_tier:
           type: string
           description: The service tier used for the chat completion.
+          nullable: true
         choices:
           type: array
           items:
