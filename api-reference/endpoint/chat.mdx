@@ -1,4 +1,253 @@
 ---
-title: 'Chat with your repository'
-openapi: 'POST /chat'
+openapi: POST /chat
+description: "Chat with your repository"
 ---
+
+# Chat API Documentation
+
+The Chat API allows you to interact with your repository through natural language conversations. This API endpoint enables you to send messages and receive AI-generated responses based on the content of your repository.
+
+## Base URL
+
+```bash
+https://api.trydepth.ai
+```
+
+## Authentication
+
+All API requests require authentication using Bearer token authentication.
+
+```bash
+Authorization: Bearer YOUR_API_TOKEN
+```
+
+## Chat Endpoint
+
+### POST /chat
+
+Chat with your repository by sending messages and receiving AI-generated responses.
+
+<ParamField query="repo_name" type="string" required>
+  Name of the repository to query (e.g., github.com/calcom/cal.com)
+</ParamField>
+
+#### Request Body
+
+<ResponseField name="messages" type="array" required>
+  <Expandable title="properties">
+    <ResponseField name="role" type="string" required>
+      The role of the message sender. Must be one of: "user", "assistant", or "system"
+    </ResponseField>
+    
+    <ResponseField name="content" type="string" required>
+      The content of the message
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="model" type="string" required>
+  <Expandable title="properties">
+    The model to use for chat completion. Currently supports:
+    - gpt-4o
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="stream" type="boolean">
+  Whether to stream the response. Defaults to true.
+</ResponseField>
+
+<ResponseField name="temperature" type="number">
+  Sampling temperature for response generation. Must be between 0 and 2.
+</ResponseField>
+
+#### Response
+
+<ResponseField name="ChatCompletion" type="object">
+  <Expandable title="properties">
+    <ResponseField name="id" type="string" required>
+      Unique identifier for the chat completion
+    </ResponseField>
+
+    <ResponseField name="object" type="string" required>
+      The object type, always "chat.completion"
+    </ResponseField>
+
+    <ResponseField name="created" type="integer" required>
+      Unix timestamp of when the chat completion was created
+    </ResponseField>
+
+    <ResponseField name="model" type="string" required>
+      The model used for completion
+    </ResponseField>
+
+    <ResponseField name="system_fingerprint" type="string">
+      System fingerprint information
+    </ResponseField>
+
+    <ResponseField name="choices" type="array" required>
+      <Expandable title="properties">
+        <ResponseField name="index" type="integer" required>
+          Index of the choice
+        </ResponseField>
+
+        <ResponseField name="message" type="object" required>
+          <Expandable title="properties">
+            <ResponseField name="role" type="string" required>
+              The role of the message sender (always "assistant")
+            </ResponseField>
+
+            <ResponseField name="content" type="string" required>
+              The content of the message
+            </ResponseField>
+
+            <ResponseField name="function_call" type="object">
+              Optional function call information
+            </ResponseField>
+
+            <ResponseField name="tool_calls" type="array">
+              Optional tool calls information
+            </ResponseField>
+
+            <ResponseField name="refusal" type="string">
+              Optional refusal message
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="finish_reason" type="string" required>
+          Reason for finishing the completion. One of: "stop", "length", "tool_calls", "content_filter", "function_call"
+        </ResponseField>
+
+        <ResponseField name="logprobs" type="object">
+          Optional log probabilities information
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+
+    <ResponseField name="usage" type="object" required>
+      <Expandable title="properties">
+        <ResponseField name="prompt_tokens" type="integer" required>
+          Number of tokens in the prompt
+        </ResponseField>
+
+        <ResponseField name="completion_tokens" type="integer" required>
+          Number of tokens in the completion
+        </ResponseField>
+
+        <ResponseField name="total_tokens" type="integer" required>
+          Total number of tokens used
+        </ResponseField>
+
+        <ResponseField name="completion_tokens_details" type="object">
+          <Expandable title="properties">
+            <ResponseField name="reasoning_tokens" type="integer">
+              Number of tokens used for reasoning
+            </ResponseField>
+
+            <ResponseField name="audio_tokens" type="integer">
+              Number of audio tokens used
+            </ResponseField>
+
+            <ResponseField name="accepted_prediction_tokens" type="integer">
+              Number of accepted prediction tokens
+            </ResponseField>
+
+            <ResponseField name="rejected_prediction_tokens" type="integer">
+              Number of rejected prediction tokens
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+
+        <ResponseField name="prompt_tokens_details" type="object">
+          <Expandable title="properties">
+            <ResponseField name="cached_tokens" type="integer">
+              Number of cached tokens
+            </ResponseField>
+
+            <ResponseField name="audio_tokens" type="integer">
+              Number of audio tokens used
+            </ResponseField>
+          </Expandable>
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+<RequestExample>
+
+```bash Request
+curl --request POST \
+  --url 'https://api.trydepth.ai/chat?repo_name=github.com/calcom/cal.com' \
+  --header 'Authorization: Bearer YOUR_API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the main features of this repository?"
+      }
+    ],
+    "model": "gpt-4o",
+    "stream": true
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "chat-12345",
+  "object": "chat.completion",
+  "created": 1709740800,
+  "model": "gpt-4o",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me analyze the repository and provide information about its main features..."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 24,
+    "completion_tokens": 15,
+    "total_tokens": 39
+  }
+}
+```
+
+</ResponseExample>
+
+## Error Responses
+
+<ResponseField name="Error" type="object">
+  <Expandable title="properties">
+    <ResponseField name="message" type="string" required>
+      Error message describing what went wrong
+    </ResponseField>
+
+    <ResponseField name="type" type="string" required>
+      Type of error that occurred
+    </ResponseField>
+
+    <ResponseField name="param" type="string">
+      Parameter related to the error, if applicable
+    </ResponseField>
+
+    <ResponseField name="code" type="string" required>
+      Error code
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Common Error Codes
+
+- **401**: Unauthorized - Invalid API key or repository access
+- **404**: Model not found
