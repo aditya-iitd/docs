@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Chat",
-    "description": "Chat with your repository",
+    "description": "Chat with your repository 22",
     "version": "1.0.0"
   },
   "servers": [
