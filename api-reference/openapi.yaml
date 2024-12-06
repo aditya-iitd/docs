@@ -4,7 +4,6 @@ title: Chat
 description: Chat with your repository
 version: 1.0.0
 servers:
-
 * url: https://3428-49-207-209-69.ngrok-free.app
   paths:
   /chat:
