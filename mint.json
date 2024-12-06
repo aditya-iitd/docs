@@ -75,9 +75,9 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Endpoints",
       "pages": [
-        "api-reference/endpoint/cha"
+        "api-reference/endpoint/chat"
       ]
     }
   ],
