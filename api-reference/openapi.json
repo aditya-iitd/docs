@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.1",
   "paths": {
     "/chat": {
       "post": {
@@ -15,11 +15,6 @@
             },
             "description": "Name of the repository to query (e.g., github.com/calcom/cal.com)",
             "example": "github.com/calcom/cal.com"
-          }
-        ],
-        "security": [
-          {
-            "BearerAuth": []
           }
         ],
         "requestBody": {
