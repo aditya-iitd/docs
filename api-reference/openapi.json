@@ -38,16 +38,23 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "messages",
+                  "model"
+                ],
                 "properties": {
                   "messages": {
                     "description": "A list of messages comprising the conversation so far.",
                     "type": "array",
                     "items": {
                       "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
                       "properties": {
                         "role": {
                           "type": "string",
-                          "required": true,
                           "description": "The role of the message sender.",
                           "enum": [
                             "user",
@@ -57,7 +64,6 @@
                         },
                         "content": {
                           "type": "string",
-                          "required": true,
                           "description": "The content of the message."
                         }
                       }
@@ -65,7 +71,6 @@
                   },
                   "model": {
                     "type": "string",
-                    "required": true,
                     "enum": [
                       "gpt-4o"
                     ],
