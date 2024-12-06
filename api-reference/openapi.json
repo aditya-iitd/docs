@@ -1,5 +1,15 @@
 {
   "openapi": "3.0.1",
+  "info": {
+    "title": "Repository Chat API",
+    "description": "API for chatting with AI about your repository code",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1"
+    }
+  ],
   "paths": {
     "/chat": {
       "post": {
@@ -19,7 +29,7 @@
         ],
         "security": [
           {
-            "BearerAuth": []
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -123,6 +133,7 @@
     "schemas": {
       "ErrorObject": {
         "type": "object",
+        "required": ["message", "type", "code"],
         "properties": {
           "message": {
             "type": "string"
@@ -141,11 +152,51 @@
       },
       "ChatCompletion": {
         "type": "object",
-        "description": "Chat completion response"
+        "required": ["id", "object", "created", "model", "choices"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string",
+            "enum": ["chat.completion"]
+          },
+          "created": {
+            "type": "integer"
+          },
+          "model": {
+            "type": "string"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["index", "message"],
+              "properties": {
+                "index": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "object",
+                  "required": ["role", "content"],
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "enum": ["assistant"]
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
-      "BearerAuth": {
+      "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
       }
