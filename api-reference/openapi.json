@@ -172,7 +172,8 @@
           "object",
           "created",
           "model",
-          "choices"
+          "choices",
+          "usage"
         ],
         "properties": {
           "id": {
@@ -190,13 +191,17 @@
           "model": {
             "type": "string"
           },
+          "system_fingerprint": {
+            "type": "string"
+          },
           "choices": {
             "type": "array",
             "items": {
               "type": "object",
               "required": [
                 "index",
-                "message"
+                "message",
+                "finish_reason"
               ],
               "properties": {
                 "index": {
@@ -217,11 +222,85 @@
                     },
                     "content": {
                       "type": "string"
+                    },
+                    "function_call": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "tool_calls": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "refusal": {
+                      "type": "string",
+                      "nullable": true
                     }
+                  }
+                },
+                "finish_reason": {
+                  "type": "string",
+                  "enum": ["stop", "length", "tool_calls", "content_filter", "function_call"]
+                },
+                "logprobs": {
+                  "type": "object",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "usage": {
+            "type": "object",
+            "required": [
+              "prompt_tokens",
+              "completion_tokens",
+              "total_tokens"
+            ],
+            "properties": {
+              "prompt_tokens": {
+                "type": "integer"
+              },
+              "completion_tokens": {
+                "type": "integer"
+              },
+              "total_tokens": {
+                "type": "integer"
+              },
+              "completion_tokens_details": {
+                "type": "object",
+                "properties": {
+                  "reasoning_tokens": {
+                    "type": "integer"
+                  },
+                  "audio_tokens": {
+                    "type": "integer"
+                  },
+                  "accepted_prediction_tokens": {
+                    "type": "integer"
+                  },
+                  "rejected_prediction_tokens": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "prompt_tokens_details": {
+                "type": "object",
+                "properties": {
+                  "cached_tokens": {
+                    "type": "integer"
+                  },
+                  "audio_tokens": {
+                    "type": "integer"
                   }
                 }
               }
             }
+          },
+          "service_tier": {
+            "type": "string",
+            "nullable": true
           }
         }
       }
