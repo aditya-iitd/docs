@@ -1,183 +1,154 @@
-{
-  "openapi": "3.0.1",
-  "info": {
-    "title": "Repository Chat API",
-    "description": "API for chatting with AI about your repository code",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/chat": {
-      "post": {
-        "summary": "Chat with your repository",
-        "operationId": "chat",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["messages", "model"],
-                "properties": {
-                  "messages": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": ["role", "content"],
-                      "properties": {
-                        "role": {
-                          "type": "string",
-                          "enum": ["user", "assistant", "system"]
-                        },
-                        "content": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "model": {
-                    "type": "string",
-                    "enum": ["gpt-4o"],
-                    "description": "The model to use for chat completion"
-                  },
-                  "stream": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Whether to stream the response"
-                  },
-                  "temperature": {
-                    "type": "number",
-                    "format": "float",
-                    "minimum": 0,
-                    "maximum": 2,
-                    "description": "Sampling temperature for response generation"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful chat response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChatCompletion"
-                }
-              },
-              "text/event-stream": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "Stream of chat completion chunks when stream=true"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid API key or repository access",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "detail": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Model not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "$ref": "#/components/schemas/ErrorObject"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "ErrorObject": {
-        "type": "object",
-        "required": ["message", "type", "code"],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "param": {
-            "type": "string",
-            "nullable": true
-          },
-          "code": {
-            "type": "string"
-          }
-        }
-      },
-      "ChatCompletion": {
-        "type": "object",
-        "required": ["id", "object", "created", "model", "choices"],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "object": {
-            "type": "string",
-            "enum": ["chat.completion"]
-          },
-          "created": {
-            "type": "integer"
-          },
-          "model": {
-            "type": "string"
-          },
-          "choices": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["index", "message"],
-              "properties": {
-                "index": {
-                  "type": "integer"
-                },
-                "message": {
-                  "type": "object",
-                  "required": ["role", "content"],
-                  "properties": {
-                    "role": {
-                      "type": "string",
-                      "enum": ["assistant"]
-                    },
-                    "content": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
-}
+openapi: 3.0.1
+info:
+  title: Chat
+  description: Chat with your repository
+  version: 1.0.0
+servers:
+  - url: https://api.trydepth.ai
+paths:
+  /chat:
+    post:
+      summary: Chat with your repository
+      operationId: chat
+      parameters:
+        - name: repo_name
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Name of the repository to query (e.g., github.com/calcom/cal.com)
+          example: github.com/calcom/cal.com
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - messages
+                - model
+              properties:
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum:
+                          - user
+                          - assistant
+                          - system
+                      content:
+                        type: string
+                model:
+                  type: string
+                  enum:
+                    - gpt-4o
+                  description: The model to use for chat completion
+                stream:
+                  type: boolean
+                  default: true
+                  description: Whether to stream the response
+                temperature:
+                  type: number
+                  format: float
+                  minimum: 0
+                  maximum: 2
+                  description: Sampling temperature for response generation
+      responses:
+        '200':
+          description: Successful chat response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletion'
+            text/event-stream:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized - Invalid API key or repository access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+        '404':
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    $ref: '#/components/schemas/ErrorObject'
+components:
+  schemas:
+    ErrorObject:
+      type: object
+      required:
+        - message
+        - type
+        - code
+      properties:
+        message:
+          type: string
+        type:
+          type: string
+        param:
+          type: string
+          nullable: true
+        code:
+          type: string
+    ChatCompletion:
+      type: object
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+            - chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            required:
+              - index
+              - message
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+                required:
+                  - role
+                  - content
+                properties:
+                  role:
+                    type: string
+                    enum:
+                      - assistant
+                  content:
+                    type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
