@@ -3,7 +3,7 @@
   "paths": {
     "/chat": {
       "post": {
-        "summary": "Chat with AI about repository code",
+        "summary": "Chat with your repository",
         "operationId": "chat",
         "parameters": [
           {
@@ -53,7 +53,7 @@
                   },
                   "stream": {
                     "type": "boolean",
-                    "default": false,
+                    "default": true,
                     "description": "Whether to stream the response"
                   },
                   "temperature": {
@@ -141,7 +141,7 @@
       },
       "ChatCompletion": {
         "type": "object",
-        "description": "OpenAI-compatible chat completion response"
+        "description": "Chat completion response"
       }
     },
     "securitySchemes": {
