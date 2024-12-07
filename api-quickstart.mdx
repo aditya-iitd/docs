@@ -1,0 +1,170 @@
+---
+title: "API Quickstart"
+description: "Get started with Depth API in minutes"
+---
+
+This guide will walk you through connecting your GitHub repository and making your first API request.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Depth AI Account" icon="user" href="https://app.trydepth.ai">
+    Sign up for a Depth AI account at [https://app.trydepth.ai](https://app.trydepth.ai)
+  </Card>
+
+  <Card title="GitHub Repository" icon="github">
+    A GitHub repository you want to query. We support both public and private repositories
+  </Card>
+</CardGroup>
+
+## Connecting Your Repository
+
+<Steps>
+  <Step title="Connect GitHub">
+    1. Navigate to [Github Integrations](https://app.trydepth.ai/new-settings/integrations/github) page
+
+    2. Click on "Connect" to authorize Depth AI to connect to your Github account
+
+    3. Add the repositories that you want to index on the Github authentication redirect. You can also use the "Configure" button to add more permissions later.
+  </Step>
+
+  <Step title="Select Repository">
+    Enter the Github repository URL for the repo you want to add
+  </Step>
+
+  <Step title="Configure repository settings and start indexing">
+    Click "Start Indexing" to begin the indexing process. This may take a few hours depending on the repository size.
+  </Step>
+</Steps>
+
+<Note>
+  The indexing process needs to complete before you can start querying your repository through the API.
+</Note>
+
+## Authentication
+
+To use the Depth API, you'll need an API key. Here's how to get one:
+
+<Steps>
+  <Step title="Generate API Key">
+    1. Go to [API Keys](https://app.trydepth.ai/new-settings/api-keys) page in Organisation Settings
+
+    2. Click "Create New API Key"
+
+    3. Give your key a name and click "Create"
+
+    4. Copy and securely store your API key
+  </Step>
+
+  <Step title="Using the API Key">
+    Include your API key in the requests using Bearer authentication:
+
+    <CodeGroup>
+      ```bash cURL
+      curl -X POST "https://api.trydepth.ai/chat?repo_name=github.com/calcom/cal.com" \
+        -H "Authorization: Bearer your_api_key" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "messages": [{"role": "user", "content": "What are the API routes?"}],
+          "model": "gpt-4o"
+        }'
+      ```
+
+      ```python Python
+      import requests
+
+      headers = {
+          "Authorization": f"Bearer your_api_key",
+          "Content-Type": "application/json"
+      }
+
+      data = {
+          "messages": [{"role": "user", "content": "What are the API routes?"}],
+          "model": "gpt-4o"
+      }
+
+      response = requests.post(
+          "https://api.trydepth.ai/chat",
+          headers=headers,
+          params={"repo_name": "github.com/calcom/cal.com"},
+          json=data
+      )
+      ```
+
+      ```javascript JavaScript
+      const response = await fetch("https://api.trydepth.ai/chat?repo_name=github.com/calcom/cal.com", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer your_api_key",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          messages: [{role: "user", content: "What are the API routes?"}],
+          model: "gpt-4o"
+        })
+      });
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+<Note>
+  Never share your API key or commit it to version control. Use environment variables to store sensitive credentials.
+</Note>
+
+## API Parameters
+
+<AccordionGroup>
+  <Accordion title="Required Parameters">
+    * `repo_name`: The GitHub repository to query (e.g., "github.com/calcom/cal.com")
+
+    * `messages`: Array of message objects with `role` and `content`
+
+    * `model`: Currently supports "gpt-4o"
+  </Accordion>
+
+  <Accordion title="Optional Parameters">
+    * `stream`: Boolean flag for streaming responses (default: true)
+
+    * `temperature`: Float between 0 and 2 for response randomness
+  </Accordion>
+
+  <Accordion title="Response Formats">
+    * Standard JSON response when `stream: false`
+
+    * Server-sent events when `stream: true`
+  </Accordion>
+</AccordionGroup>
+
+## Error Handling
+
+<CardGroup cols={2}>
+  <Card title="401 Unauthorized" icon="lock">
+    Invalid API key or insufficient repository access
+  </Card>
+
+  <Card title="404 Not Found" icon="circle-exclamation">
+    Requested model not found. We only support gpt-4o in the Free Tier
+  </Card>
+</CardGroup>
+
+For detailed error responses, check the `error` object in the response body:
+
+```javascript
+{
+  "error": {
+    "message": "Error message",
+    "type": "error_type",
+    "param": "parameter_name",
+    "code": "error_code"
+  }
+}
+```
+
+## Need Help?
+
+If you face any issues or have questions, we're here to help! Contact us at [founders@trydepth.ai](mailto:founders@trydepth.ai) - we typically reply within minutes.
+
+<Card title="Contact Support" icon="envelope">
+  Email us at [founders@trydepth.ai](mailto:founders@trydepth.ai) for quick assistance
+</Card>

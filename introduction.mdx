@@ -1,71 +1,114 @@
 ---
 title: Introduction
-description: 'Welcome to the home of your new documentation'
+description: 'Empower your team with AI that deeply understands your codebase'
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
+## Chat with Your Codebase
 
-## Setting up
+<Frame>
+  <img src="/images/chat-full.png" alt="AI Understanding Visualization" />
+</Frame>
 
-The first step to world-class documentation is setting up your editing environments.
+Unlike simple RAG-based solutions, Depth AI constructs a detailed code graph that captures the complete structure of your codebase. This enables it to answer complex questions on large and messy codebases.
 
 <CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
+  <Card title="Component Relationships" icon="diagram-project">
+    Map out how different parts of your system interact and depend on each other
   </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
+  
+  <Card title="Architectural Patterns" icon="sitemap">
+    Identify and understand the architectural patterns used across your codebase
+  </Card>
+  
+  <Card title="System Dependencies" icon="code-branch">
+    Track all internal and external dependencies throughout your system
+  </Card>
+  
+  <Card title="Code Hierarchies" icon="tree">
+    Visualize the hierarchical structure of your codebase components
   </Card>
 </CardGroup>
 
-## Make it yours
+## Available Everywhere You Code
 
-Update your docs to your brand and add valuable content for the best user conversion.
+<Steps>
+  <Step title="Web App" icon="browser">
+    <Frame>
+      <img src="/images/chat.png" alt="Depth AI Web Interface" />
+    </Frame>
+    Chat with your codebase through our web app.
+  </Step>
+  
+  <Step title="Slack Integration" icon="slack">
+    <Frame>
+      <img src="/images/slack.png" alt="Depth AI Slack Integration" />
+    </Frame>
+    Get instant answers about your code directly in Slack - where your team already collaborates.
+  </Step>
+  
+  <Step title="GitHub Copilot" icon="github">
+    <Frame>
+      <img src="/images/copilot.png" alt="Depth AI GitHub Copilot Integration" />
+    </Frame>
+    Seamless integration with GitHub Copilot for enhanced development experience.
+  </Step>
+</Steps>
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
+<CardGroup cols={3}>
+  <Card title="Web App" icon="browser" href="/integrations/web">
+    Learn more about our web interface
   </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
+  <Card title="Slack Integration" icon="slack" href="/integrations/slack">
+    Set up Depth AI in Slack
   </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
+  <Card title="GitHub Copilot" icon="github" href="/integrations/github-copilot">
+    Enhance GitHub Copilot with Depth AI
   </Card>
 </CardGroup>
+
+## Specialized Assistants
+
+Create specialized assistants on different parts of your codebase and deploy them in your workflows. Just select files and folders from your codebase as knowledge sources, and the assistant is ready.
+
+<Frame>
+  <img src="/images/assistants.png" alt="Creating Specialized Assistants" />
+</Frame>
+
+<Card title="Learn More About Assistants" icon="robot" href="/guides/assistants">
+  Detailed guide on creating and deploying specialized assistants for your team
+</Card>
+
+
+## API First
+
+Use the chat API to build tools on top of Depth AI.
+
+```bash
+curl -X POST "https://api.trydepth.ai/chat?repo_name=github.com/calcom/cal.com" \
+  -H "Authorization: Bearer your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [{"role": "user", "content": "What are the API routes?"}],
+    "model": "gpt-4"
+  }'
+```
+
+### Example Tools You Can Build
+
+<Steps>
+  <Step title="On-Call Debugger" icon="bug">
+    Build a bot that helps on-call engineers debug production issues by providing context about error logs and related code.
+  </Step>
+  
+  <Step title="Documentation Writer" icon="book">
+    Create automated documentation generators that explain code changes and keep technical docs in sync with your codebase.
+  </Step>
+  
+  <Step title="Code Review Bot" icon="code-pull-request">
+    Deploy an AI reviewer that analyzes pull requests and provides detailed feedback based on your codebase patterns.
+  </Step>
+</Steps>
+
+<Card title="Chat API" icon="robot" href="/api-quickstart">
+  Detailed guide on using the chat API
+</Card>

@@ -2,76 +2,63 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/light.png",
+    "light": "/logo/dark.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#000000",
+    "light": "#666666",
+    "dark": "#000000",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#000000",
+      "to": "#666666"
     }
   },
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:founders@trydepth.ai"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Go To App",
+    "url": "https://app.trydepth.ai"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
     {
       "name": "Community",
       "icon": "slack",
       "url": "https://mintlify.com/community"
     },
     {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Book a demo",
+      "icon": "calendar",
+      "url": "https://cal.com/aditya-singh-celko7/30min"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Documentation",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
+        "api-quickstart",
+        "billing"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Guides",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "guides/adding-a-new-repository",
+        "guides/assistants"
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "Integrations",
       "pages": [
-        "api-reference/introduction"
+        "integrations/github",
+        "integrations/github-copilot",
+        "integrations/slack"
       ]
     },
     {
@@ -85,5 +72,8 @@
     "x": "https://x.com/mintlify",
     "github": "https://github.com/mintlify",
     "linkedin": "https://linkedin.com/company/mintlify"
+  },
+  "integrations": {
+    "intercom": "gwgodct8"
   }
 }

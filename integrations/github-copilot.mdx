@@ -1,0 +1,84 @@
+---
+title: GitHub Copilot
+description: 'Use Depth AI directly within GitHub Copilot across multiple platforms'
+---
+
+Depth AI seamlessly integrates with GitHub Copilot, allowing you to access AI assistance directly within your development environment. This integration is available across multiple platforms:
+
+<CardGroup cols={3}>
+  <Card title="VS Code" icon="code">
+    Visual Studio Code editor
+  </Card>
+  <Card title="Visual Studio" icon="microsoft">
+    Visual Studio IDE
+  </Card>
+  <Card title="JetBrains" icon="java">
+    All JetBrains IDEs
+  </Card>
+  <Card title="GitHub.com" icon="github">
+    GitHub web interface
+  </Card>
+  <Card title="GitHub Mobile" icon="mobile">
+    GitHub mobile apps
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+<Steps>
+  <Step title="Prerequisites">
+    <Card title="Complete GitHub Setup" icon="github" href="/integrations/github">
+      Ensure you have completed the GitHub integration setup before proceeding
+    </Card>
+  </Step>
+
+  <Step title="IDE Configuration">
+    After setting up the integration, you may need to:
+    - Restart your IDE
+    - Wait a few minutes for the integration to activate
+    - Ensure GitHub Copilot is properly installed in your IDE
+  </Step>
+
+  <Step title="Authorization">
+    <Note>
+      The first time you use Depth AI in Copilot, you'll need to complete a one-time authorization:
+    </Note>
+
+    1. Tag `@depthai` in the Copilot chat
+    2. Click "Connect" in the authorization prompt
+    
+    <Frame>
+      <img src="/images/copilot/auth.png" alt="GitHub Copilot authorization prompt" />
+    </Frame>
+    
+    3. Approve the GitHub authorization request
+    
+    <Frame>
+      <img src="/images/copilot/auth-redirect.png" alt="GitHub authorization page" />
+    </Frame>
+  </Step>
+
+  <Step title="Configure Default Repository">
+    After authorization, you'll need to set up your default repository in your Depth AI settings:
+
+    1. Go to [GitHub Copilot Settings](https://app.trydepth.ai/new-settings/copilot) page
+    2. Select the repository you want to use as context for your Copilot questions
+    
+    <Frame>
+      <img src="/images/copilot/default.png" alt="Configuring default repository in Depth AI settings" />
+    </Frame>
+
+    This repository will be used as the primary context when you ask questions through GitHub Copilot.
+  </Step>
+
+  <Step title="Start Using">
+    Once authorized, you can:
+    - Tag `@depthai` in any Copilot chat
+    - Ask questions about your code
+    - Get AI-powered assistance directly in your development workflow
+    
+    <Frame>
+      <img src="/images/copilot/copilot.png" alt="Using Depth AI in GitHub Copilot" />
+    </Frame>
+  </Step>
+</Steps>

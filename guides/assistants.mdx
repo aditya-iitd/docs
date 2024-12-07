@@ -1,0 +1,89 @@
+---
+title: Creating and Deploying Assistants 
+description: 'Learn how to create specialized AI assistants and deploy them to Slack'
+---
+
+Depth AI assistants help you create specialized AI agents that understand specific parts of your codebase. You can chat with these assistants directly or deploy them to Slack channels for team-wide access.
+
+## Creating an Assistant
+
+<Steps>
+  <Step title="Access Assistants Page">
+    Navigate to the [Assistants page](https://app.trydepth.ai/assistants) and click the "Create new assistant" button in the top right.
+  </Step>
+
+  <Step title="Basic Information">
+    In the creation panel, provide:
+    - **Name**: A descriptive name for your assistant
+    - **Description**: Brief explanation of the assistant's purpose
+    - **Repository**: Select the repository this assistant will have access to
+    
+    <Frame>
+      <img src="/images/assistant/basic.png" />
+    </Frame>
+  </Step>
+
+  <Step title="Configure Knowledge Base">
+    <Note>
+      This step is optional but recommended for better response quality.
+    </Note>
+
+    Specify which files and folders should be part of the assistant's knowledge base:
+    - Click into the search field to browse available files/folders
+    - Select relevant paths to restrict the assistant's context
+    - If nothing is selected, the assistant will have access to the full repository
+
+    <Frame>
+      <img src="/images/assistant/knowledge.png" />
+    </Frame>
+  </Step>
+
+  <Step title="Add Starter Questions">
+    <Note>
+      This step is optional. Starter questions appear as suggestions when users begin chatting with the assistant.
+    </Note>
+
+    Add up to 4 common questions that users might ask this assistant. For example:
+    - "How do I set up the repository locally?"
+    - "Where can I find the API documentation?"
+    - "What's the recommended way to contribute?"
+  </Step>
+
+  <Step title="Deploy to Slack">
+    <Note>
+      This step is optional. You can always deploy to Slack later from the assistant's edit page.
+    </Note>
+
+    <Card title="Complete Slack Integration First" icon="slack" href="/integrations/slack">
+      Before deploying to Slack, make sure to complete the [Slack integration setup](/integrations/slack) first.
+    </Card>
+
+    To make the assistant available in Slack:
+    1. Enter comma-separated Slack channel IDs
+    2. The assistant will be available in these channels
+    3. In deployed channels, the assistant's specialized knowledge takes precedence over any default repository context
+    <Frame>
+      <img src="/images/assistant/slack.png" />
+    </Frame>
+  </Step>
+
+  <Step title="Start Chatting">
+    Once created, you can chat with your assistant directly through the [Assistants page](https://app.trydepth.ai/assistants) or tag `@Depth` in Slack to ask questions.
+    <Frame>
+      <img src="/images/assistant/start.png" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Using Your Assistant
+
+Once created, there are several ways to interact with your assistant:
+
+<CardGroup cols={2}>
+  <Card title="Web App" icon="browser">
+    Chat directly through the [Assistants page](https://app.trydepth.ai/assistants)
+  </Card>
+  <Card title="Slack" icon="slack">
+    If deployed, tag `@Depth` in configured Slack channels to ask questions
+  </Card>
+</CardGroup>

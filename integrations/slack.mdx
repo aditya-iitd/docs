@@ -1,0 +1,74 @@
+---
+title: Slack
+description: Connect Depth AI with your Slack workspace
+---
+
+Depth AI's Slack integration allows you to interact with your codebase directly from Slack. You can ask questions about your code, get explanations, and deploy specialized assistants to specific channels.
+
+## Connecting to Slack
+
+<Steps>
+  <Step title="Access Slack Integration">
+    Navigate to the [Slack Integration settings](https://app.trydepth.ai/new-settings/integrations/slack) in your Depth AI dashboard and click the "Connect" button.
+    
+    <Frame>
+      <img src="/images/slack/connect.png" alt="Slack integration page with Connect button" />
+    </Frame>
+  </Step>
+  
+  <Step title="Authorize Access">
+    You'll be redirected to Slack where you'll need to review and accept the permissions that Depth AI requires:
+    
+    <Frame>
+      <img src="/images/slack/slack-redirect.png" alt="Slack permissions authorization screen" />
+    </Frame>
+  </Step>
+
+  <Step title="Confirm Installation">
+    Once authorized, you'll see Depth AI listed in your Slack workspace under Apps --> Add apps.
+  </Step>
+
+  <Step title="Configure Default Repository">
+    Enter your repository URL in the Default Repository field and click Update to save your changes. This is required before you can use Depth AI in Slack.
+    
+    <Frame>
+      <img src="/images/slack/add-default-repo.png" alt="Default repository configuration screen" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Using Depth AI in Slack
+
+There are two main ways to interact with Depth AI in Slack:
+
+<Steps>
+  <Step title="Using the New Chat Button" icon="message">
+    Start a fresh conversation by clicking the "New Chat" button.
+    
+    <Frame>
+      <img src="/images/slack/chat.png" alt="New Chat button in Slack" />
+    </Frame>
+  </Step>
+
+  <Step title="Mentioning Depth AI" icon="at">
+    Simply mention `@Depth` in any channel or DM to ask questions about your code.
+    
+    <Frame>
+      <img src="/images/slack/start.png" alt="Mentioning Depth AI in Slack" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Deploying Specialized Assistants
+
+<Card title="Deploy Assistants" icon="slack" href="/guides/assistants">
+  You can create specialized assistants trained on specific parts of your codebase and deploy them to different Slack channels.
+</Card>
+
+## Chat context
+
+When you start a new chat or mention Depth AI in direct messages, the assistant will use your default repository as its knowledge source.
+
+<Note>
+  In channels where you've deployed specialized assistants, the assistant's knowledge base takes precedence over the default repository context. This allows you to have assistants specialized in different parts of your codebase in different channels.
+</Note>
